@@ -4,7 +4,9 @@ imatges = imageDatastore('Training-Dataset\Images\*.jpg');
 mascaras = imageDatastore('Training-Dataset\Masks-Ideal\*.bmp');
 Nbins = 32;
 histograma = zeros(Nbins,Nbins);
-
+x= 0.4:(0.65-0.4)/(Nbins-1) :0.65;
+y= 0.35:(0.6-0.35)/(Nbins-1) :0.6;
+size=0;
 
 for k= 1:length(imatges.Files)
     
@@ -21,9 +23,20 @@ for k= 1:length(imatges.Files)
     final = image_f(~mask_f, :);
     final = im2double(final);
     final = rgb2ycbcr(final);
-    colorbar
-    histograma = histograma + hist3(final(:,2:3),'Nbins',[Nbins,Nbins]); %%%PROBLEMS WITH NORMALIZATION
+    size=size+length(final(:,1));
+    histograma = histograma + hist3(final(:,2:3), 'Edges', {y x}); %%%PROBLEMS WITH NORMALIZATION
 
 end
+bar3(x,histograma);
+xlabel('Cb')
+ylabel('Cr')
+zlabel('num of pixels')
+colormap
+colorbar
 
-bar3(histograma)
+%Check for dimensionality reduction
+origin=640*480*length(imatges.Files);
+size=origin/size;
+fprintf("Dimensionality reduction "+size+"\n")
+
+
