@@ -1,13 +1,14 @@
 
 %%%%%%%%%%%%%%%% Algorithm 2 %%%%%%%%%%%%%%%%
-
+load("metadata.mat");
 function [mask] = Algo2(image)
     image = im2double(image);
     image = rgb2ycbcr(image);
-    mask = 0.65>image(:,:,2)>0.6;
-    imshow(mask)
 end
 
+function [output] = convert(input)
+
+end
 
 %%%%%TODO%%%%%%%%%
 % 1. Trobar els thresholds de crominancia del algo1

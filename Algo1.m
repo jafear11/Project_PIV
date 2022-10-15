@@ -28,9 +28,11 @@ for k= 1:length(imatges.Files)
     final = image_f(~mask_f, :);
     final = im2double(final);
     final = rgb2ycbcr(final);
-    histograma = histograma + hist3(final(:,2:3), 'Edges', {cb cr}); %%%PROBLEMS WITH NORMALIZATION
+    histograma = histograma + hist3(final(:,2:3), 'Edges', {cb cr}); 
 
 end
+
+%Show the final histogram and the mask with the specified threshold
 figure(1);
 bar3(cb,histograma);
 xlabel('Cb')
@@ -38,17 +40,15 @@ ylabel('Cr')
 zlabel('num of pixels')
 colormap
 colorbar
-save('DB_Histogram.mat', 'histograma');
 hist_mask = histograma > threshold;
 figure(2);
 imshow(hist_mask, 'InitialMagnification', 1400);
-save('Histogram_mask.mat', 'hist_mask');
-fid = fopen('metadata.txt', 'wt');
-fprintf(fid, ...
-    "Nbins: " + Nbins + "\n" + ...
-    "Cb_margins: " + cb_margin(1) + "-" + cb_margin(2) + "\n" + ...
-    "Cr_margins: " + cr_margin(1) + "-" + cr_margin(2)+ "\n");
 
+%Store the histogram and the configuration parameters
+save('DB_Histogram.mat', 'histograma');
+save('Histogram_mask.mat', 'hist_mask');
+save('metadata.mat','Nbins', 'cb_margin', 'cr_margin','threshold');
+clear
 
 
 
