@@ -1,24 +1,24 @@
 
 %%%%%%%%%%%%%%%% Algorithm 2 %%%%%%%%%%%%%%%%
+
+function [mask] = algo2(image)
 load("metadata.mat");
-function [mask] = Algo2(image)
-    image = im2double(image);
-    image = rgb2ycbcr(image);
+load("Histogram_mask.mat");
+image = im2double(image);
+image = rgb2ycbcr(image);
+[M,N]= size(image(:,:,1));
+mask = zeros(M,N);
+for i=1:M
+    for j =1:N
+        cb = image(i,j,2);
+        cr = image(i,j,3);
+        h1 = round((cb-cb_margin(1))/(cb_margin(2)-cb_margin(1))*(Nbins-1)+1);
+        h2 = round((cr-cr_margin(1))/(cr_margin(2)-cr_margin(1))*(Nbins-1)+1);
+        if ~(0<h1<Nbins | 0<h2<Nbins)
+            mask(i,j) = 1;
+        else
+            mask(i,j) = ~hist_mask(h1,h2);
+        end
+    end
 end
-
-function [output] = convert(input)
-
 end
-
-%%%%%TODO%%%%%%%%%
-% 1. Trobar els thresholds de crominancia del algo1
-% 2. Passar la imatge de rgb a ycbcr
-% 3. Comprobar quins pixels de la imatge argument son de pell, i els posem
-% A ZERO
-% 4. Retornar la imatge de màscara, 1 ÚNIC CANAL
-%
-%
-%
-%
-%
-%

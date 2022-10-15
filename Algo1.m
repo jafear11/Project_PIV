@@ -5,7 +5,7 @@ mascaras = imageDatastore('Training-Dataset\Masks-Ideal\*.bmp');
 
 %Parameters
 Nbins = 64; %Number of bins in each histogram axis
-threshold = 1000; %Number of pixels necessary in the database for that color to be considered relevant
+threshold = 800; %Number of pixels necessary in the database for that color to be considered relevant
 cb_margin = [0.35 0.6]; %Margin from which to make histogram bins in Cb axis
 cr_margin = [0.4 0.65]; %Margin from which to make histogram bins in Cr axis
 
@@ -48,7 +48,7 @@ imshow(hist_mask, 'InitialMagnification', 1400);
 save('DB_Histogram.mat', 'histograma');
 save('Histogram_mask.mat', 'hist_mask');
 save('metadata.mat','Nbins', 'cb_margin', 'cr_margin','threshold');
-clear
+
 
 
 
