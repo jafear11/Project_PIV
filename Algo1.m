@@ -5,13 +5,13 @@ mascaras = imageDatastore('Training-Dataset\Masks-Ideal\*.bmp');
 
 %Parameters
 Nbins = 64; %Number of bins in each histogram axis
-threshold = 800; %Number of pixels necessary in the database for that color to be considered relevant
-cb_margin = [0.35 0.6]; %Margin from which to make histogram bins in Cb axis
-cr_margin = [0.4 0.65]; %Margin from which to make histogram bins in Cr axis
+threshold = 2000; %Number of pixels necessary in the database for that color to be considered relevant
+cb_margin = [0.4 0.5]; %Margin from which to make histogram bins in Cb axis
+cr_margin = [0.45 0.65]; %Margin from which to make histogram bins in Cr axis
 
 histograma = zeros(Nbins,Nbins);
-cb= cb_margin(1):(0.6-0.35)/(Nbins-1) :cb_margin(2);
-cr= cr_margin(1):(0.65-0.4)/(Nbins-1) :cr_margin(2);
+cb= cb_margin(1):(cb_margin(2)-cb_margin(1))/(Nbins-1) :cb_margin(2);
+cr= cr_margin(1):(cr_margin(2)-cr_margin(1))/(Nbins-1) :cr_margin(2);
 
 for k= 1:length(imatges.Files)
     
