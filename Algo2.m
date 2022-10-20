@@ -1,5 +1,6 @@
 
 %%%%%%%%%%%%%%%% Algorithm 2 %%%%%%%%%%%%%%%%
+%%hola javi
 
 function [mask] = Algo2(image)
 load("metadata.mat");
