@@ -1,6 +1,6 @@
 
-imatges = imageDatastore('Training-Dataset\Images\*.jpg');
-masks = imageDatastore('Training-Dataset\Masks-Ideal\*.bmp');
+imatges = imageDatastore('Validation-Dataset\Images\*.jpg');
+masks = imageDatastore('Validation-Dataset\Masks-Ideal\*.bmp');
 
 error = zeros(length(imatges));
 

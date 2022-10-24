@@ -32,8 +32,5 @@ for i=1:M
         end
     end
 end
-
-%We apply a median filter
-mask = median_filter(mask,3);
-
 end
+
