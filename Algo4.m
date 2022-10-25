@@ -1,8 +1,8 @@
 
 %%%%%%%%%%%%%%%% Algorithm 4 %%%%%%%%%%%%%%%%
+
 estimations = dir('.\Masks\*.bmp');
 masks = dir('Validation-Dataset\Masks-Ideal\*.bmp');
-
 path_2 = what('Validation-Dataset\Masks-Ideal\').path;
 
 
@@ -36,3 +36,6 @@ Recall = TP/(TP+FN);
 F_score = 2*(Precision*Recall)/(Precision+Recall);
 
 fprintf("Precision: " + Precision + '\n'+"Recall: " + Recall + '\n'+ "F-Score: " +  F_score + '\n')
+
+
+

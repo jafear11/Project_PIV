@@ -11,6 +11,8 @@ for k = 1:length(directory)
     image = imread(file);
     guess = Algo2(image);
     figure(1);imshow(guess);
+%     figure(2);imshow(image);
+%     pause(0.1);
     file_name = strrep(directory(k).name, '.jpg', '.bmp');
     fullFileName = fullfile(ImageFolder, file_name);
     imwrite(guess,fullFileName,'bmp');

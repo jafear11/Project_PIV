@@ -1,9 +1,3 @@
-
-%%%%%%%%%%%%%%%% Algorithm 2 %%%%%%%%%%%%%%%%
-
-function [mask] = Algo2(image)
-
-%Load the database
 load("metadata.mat");
 load("Histogram_mask.mat");
 load("Histogram_background.mat");
@@ -34,5 +28,3 @@ for i=1:M
         end        
     end
 end
-end
-
