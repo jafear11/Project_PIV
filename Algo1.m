@@ -1,12 +1,13 @@
 
 %%%%%%%%%%%%%%%% Algorithm 1 %%%%%%%%%%%%%%%%
+
 imatges = imageDatastore('Training-Dataset\Images\*.jpg');
 mascaras = imageDatastore('Training-Dataset\Masks-Ideal\*.bmp');
 
 %Parameters
 Nbins = 128; %Number of bins in each histogram axis
-skin_thr = 0.00005; %Threshold probability for skin
-background_thr = 0.0005;
+skin_thr = 0.00005;
+background_thr = 0.004;
 
 total = 0;
 histograma_pell = zeros(Nbins,Nbins);
@@ -43,26 +44,28 @@ end
 %Normalize the histogram
 histograma_pell = histograma_pell / total;
 histograma_fons = histograma_fons / total;
-
-%Show the final histogram and the mask with the specified threshold
-figure(1);
-bar3(histograma_pell);
-xlabel('Cb');
-ylabel('Cr');
-zlabel('probability');
 hist_mask = histograma_pell > skin_thr;
-histograma_fons = histograma_fons > background_thr;
+histograma_fons_mask = histograma_fons > background_thr;
+%Show the final histogram and the mask with the specified threshold
+% figure(1);
+% bar3(histograma_pell);
+% xlabel('Cb');
+% ylabel('Cr');
+% zlabel('probability');
+% 
+% 
 figure(2);
 imshow(hist_mask, 'InitialMagnification', 1400);
 figure(3); 
-imshow(histograma_fons, 'InitialMagnification', 1400);
+imshow(histograma_fons_mask, 'InitialMagnification', 1400);
+
 
 %Store the histogram and the configuration parameters
 save('DB_Histogram.mat', 'histograma_pell');
 save('Histogram_mask.mat', 'hist_mask');
 save('Histogram_background.mat', 'histograma_fons');
+save('Histogram_background_mask.mat', "histograma_fons_mask");
 save('metadata.mat','Nbins','skin_thr', 'background_thr');
-clear;
 
 
 

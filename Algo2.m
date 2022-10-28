@@ -7,6 +7,8 @@ function [mask] = Algo2(image)
 load("metadata.mat");
 load("Histogram_mask.mat");
 load("Histogram_background.mat");
+load("Histogram_background_mask.mat");
+load("DB_Histogram.mat");
 
 %Transform the image to the correct color space
 image = im2double(image);
@@ -27,12 +29,21 @@ for i=1:M
         %We check if that color has passed the threshold in our histogram
         %mask.
 
-        if(histograma_fons(h1,h2))
-            mask(i,j) = 1;
-        else
-            mask(i,j) = ~hist_mask(h1,h2);
-        end        
+        %mask(i,j) = ~hist_mask(h1,h2);
+
+                if(histograma_fons_mask(h1,h2))
+                    mask(i,j) = 1;
+                else
+                    mask(i,j) = ~hist_mask(h1,h2);
+                end
+        %         if(~hist_mask(h1,h2))
+        %             mask(i,j) = 0;
+        %         else
+        %             mask(i,j) = histograma_fons_mask(h1,h2);
+        %         end
+
+        %mask(i,j) = (histograma_fons(h1,h2)/Scale)> histograma_pell(h1,h2);
+
     end
-end
 end
 

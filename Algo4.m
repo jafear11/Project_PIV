@@ -1,4 +1,4 @@
-
+function[F_score, Precision, Recall] = Algo4()
 %%%%%%%%%%%%%%%% Algorithm 4 %%%%%%%%%%%%%%%%
 
 estimations = dir('.\Masks\*.bmp');
@@ -36,6 +36,7 @@ Recall = TP/(TP+FN);
 F_score = 2*(Precision*Recall)/(Precision+Recall);
 
 fprintf("Precision: " + Precision + '\n'+"Recall: " + Recall + '\n'+ "F-Score: " +  F_score + '\n')
+end
 
 
 
