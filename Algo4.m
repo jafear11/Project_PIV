@@ -45,7 +45,7 @@ F_score = 2*Precision*Recall/(Precision+Recall);
 fprintf("Precision: " + Precision + '\n' ...
     +"Recall: " + Recall + '\n' ...
     + "F-Score: " +  F_score + '\n')
-clear
+
 
 
 

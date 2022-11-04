@@ -6,8 +6,6 @@ mascaras = imageDatastore('Training-Dataset\Masks-Ideal\*.bmp');
 
 %Parameters
 Nbins = 128; %Number of bins in each histogram axis
-skin_thr = 0.0003; %Probability threshold for skin pixels
-background_thr = 0.001; %Probability threshold for bg pixels
 
 total = 0;
 histograma_pell = zeros(Nbins,Nbins);
@@ -44,8 +42,6 @@ end
 %Normalize the histogram
 histograma_pell = histograma_pell / total;
 histograma_fons = histograma_fons / total;
-hist_mask = histograma_pell > skin_thr;
-histograma_fons_mask = histograma_fons > background_thr;
 
 %Show the final histogram and the mask with the specified threshold
 f1=figure(1);
@@ -55,16 +51,10 @@ ylabel('Cr');
 zlabel('probability');
 
 
-%Show the masks for both histograms
-f2=figure(2);
-imshow(hist_mask, 'InitialMagnification', 1400);
-
-f3=figure(3); 
-imshow(histograma_fons_mask, 'InitialMagnification', 1400);
-
 %Store the histograms and the configuration parameters
-save('Metadata.mat', 'Nbins', 'hist_mask', 'histograma_fons_mask');
-clear all
+save('Nbins.mat', 'Nbins');
+save('Histograms.mat', 'histograma_fons', 'histograma_pell');
+clear
 
 
 

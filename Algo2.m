@@ -1,16 +1,16 @@
-
 %%%%%%%%%%%%%%%% Algorithm 2 %%%%%%%%%%%%%%%%
 
-function [mask] = Algo2(image)
+function [mask] = Algo2(image, hist_skin_thr, hist_bg_thr)
 
-%Load the histograms and Nbins
-load("metadata.mat");
+%Load Nbins
+load("Nbins.mat");
 
 %Transform the image to the correct color space
 image = im2double(image);
 image = rgb2ycbcr(image);
 [M,N]= size(image(:,:,1));
 mask = zeros(M,N);
+
 
 for i=1:M
     for j=1:N
@@ -23,12 +23,12 @@ for i=1:M
 
         %We check if the color has passed the threshold in our histogram
         %mask.
-        if(histograma_fons_mask(h1,h2))
+
+        if(hist_bg_thr(h1,h2))
             mask(i,j) = 1;
         else
-            mask(i,j) = ~hist_mask(h1,h2);
-        end
-        
+            mask(i,j) = hist_skin_thr(h1,h2);
+        end 
     end
 end
 
