@@ -25,7 +25,7 @@ for k= 1:length(imatges.Files)
     total  = total +P;
     image_f = reshape(image,P,3);
 
-    %We get an array of only skin pixels
+    %We get an array of only the target pixels
     skin = image_f(~mask_f, :);
     background = image_f(mask_f,:);
     skin = im2double(skin);

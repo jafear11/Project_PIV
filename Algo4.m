@@ -25,7 +25,6 @@ for k = 1:length(estimations)
                 P=P+1;
                 if(estimation(i,j) == real_mask(i,j))
                     TP=TP+1;
-
                 end
             end
             if(real_mask(i,j) == 0)
@@ -45,6 +44,7 @@ F_score = 2*Precision*Recall/(Precision+Recall);
 fprintf("Precision: " + Precision + '\n' ...
     +"Recall: " + Recall + '\n' ...
     + "F-Score: " +  F_score + '\n')
+clear
 
 
 

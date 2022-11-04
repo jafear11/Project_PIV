@@ -5,7 +5,7 @@ function[] = Algo3(thr,nfact,show)
 
 %Default arguments
 if nargin==0
-    thr = 0.00001;
+    thr = 0.000005;
     nfact = 2;
     show=false;
 end
@@ -20,7 +20,9 @@ directory = dir('Validation-Dataset\Images\*.jpg');
 path = what('Validation-Dataset\Images').path;
 mkdir('Masks');
 ImageFolder = '.\Masks';
-SE = ones(6,6); %Structuring element for opening
+SE1 = ones(7,7); %Structuring element for opening
+SE2 = ones(2,2);
+
 
 for k = 1:length(directory)
 
@@ -30,11 +32,13 @@ for k = 1:length(directory)
     guess = Algo2(image, hist_skin_thr, hist_bg_thr);
 
     %Morphological open for mask cleaning
-    guess = imopen(guess, SE);
+    guess = imopen(guess, SE1);
+    guess = imerode(guess, SE2);
     if(show)
         figure(1);
         imshow(guess);
     end
+
     %Store the mask
     file_name = strrep(directory(k).name, '.jpg', '.bmp');
     fullFileName = fullfile(ImageFolder, file_name);
