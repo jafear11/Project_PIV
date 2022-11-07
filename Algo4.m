@@ -30,7 +30,6 @@ for k = 1:length(estimations)
             if(real_mask(i,j) == 0)
                 T=T+1;
             end
-
         end
     end
 end

@@ -4,7 +4,6 @@
 imatges = imageDatastore('Training-Dataset\Images\*.jpg');
 mascaras = imageDatastore('Training-Dataset\Masks-Ideal\*.bmp');
 
-%Parameters
 Nbins = 128; %Number of bins in each histogram axis
 
 total = 0;
@@ -49,7 +48,6 @@ bar3(histograma_pell);
 xlabel('Cb');
 ylabel('Cr');
 zlabel('probability');
-
 
 %Store the histograms and the configuration parameters
 save('Nbins.mat', 'Nbins');
