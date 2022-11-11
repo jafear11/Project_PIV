@@ -17,17 +17,18 @@ for k = 1:length(estimations)
     estimation = im2double(estimation);
     file = strcat(path_2,'\' ,masks(k).name);
     real_mask = imread(file);
+    real_mask = ~real_mask;
     [M,N]= size(estimation);
 
     for i=1:M
         for j=1:N
-            if(estimation(i,j) == 0)
+            if(estimation(i,j) == 1)
                 P=P+1;
                 if(estimation(i,j) == real_mask(i,j))
                     TP=TP+1;
                 end
             end
-            if(real_mask(i,j) == 0)
+            if(real_mask(i,j) == 1)
                 T=T+1;
             end
         end

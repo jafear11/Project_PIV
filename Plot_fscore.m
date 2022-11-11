@@ -10,6 +10,7 @@ Recall = zeros(length(estimations));
 for k = 1:length(estimations)
     file = strcat('Masks\' ,estimations(k).name);
     estimation = imread(file);
+    estimation = ~estimation;
     estimation = im2double(estimation);
     file = strcat(path_2,'\' ,masks(k).name);
     real_mask = imread(file);
@@ -36,11 +37,11 @@ for k = 1:length(estimations)
     Precision(k) = TP/P;
     Recall(k) = TP/T;
     F_score (k) = 2*Precision(k)*Recall(k)/(Precision(k)+Recall(k));
-    if(F_score(k) < 0.4)
-        figure(1);imshow(estimation);
-        figure(2);imshow(real_mask);
-        pause(0.3);
-    end
+%     if(F_score(k) < 0.4)
+%         figure(1);imshow(estimation);
+%         figure(2);imshow(real_mask);
+%         pause(0.3);
+%     end
 end
 close all;
 
@@ -50,5 +51,6 @@ hold on
 plot(Precision, '-r')
 plot(Recall, '-g')
 hold off
+legend({'F-Score', 'Precision', 'Recall'}, 'Location', 'southeast')
 
 

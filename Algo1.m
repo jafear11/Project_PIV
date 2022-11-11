@@ -48,7 +48,6 @@ bar3(histograma_pell);
 xlabel('Cb');
 ylabel('Cr');
 zlabel('probability');
-
 %Store the histograms and the configuration parameters
 save('Nbins.mat', 'Nbins');
 save('Histograms.mat', 'histograma_fons', 'histograma_pell');

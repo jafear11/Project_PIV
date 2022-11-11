@@ -23,7 +23,7 @@ for i=1:M
 
         %We check if the color has passed the threshold
         if(hist_bg_thr(h1,h2))
-            mask(i,j) = 1;
+            mask(i,j) = 0;
         else
             mask(i,j) = hist_skin_thr(h1,h2);
         end 

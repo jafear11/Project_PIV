@@ -2,10 +2,10 @@
 %%%%%%%%%%%%%%%% Algorithm 3 %%%%%%%%%%%%%%%%
 
 function[] = Algo3(thr,nfact,show)
-
+tic;
 %Default arguments
 if nargin==0
-    thr = 0.000005;
+    thr = 0.00005;
     nfact = 2;
     show=false;
 end
@@ -13,7 +13,7 @@ end
 load("Histograms.mat");
 
 %Compute comparative matrix
-hist_skin_thr = histograma_pell < thr;
+hist_skin_thr = histograma_pell > thr;
 hist_bg_thr = histograma_fons > nfact*histograma_pell;
 
 directory = dir('Validation-Dataset\Images\*.jpg');
@@ -33,8 +33,8 @@ for k = 1:length(directory)
     guess = Algo2(image, hist_skin_thr, hist_bg_thr);
 
     %Morphological operations
-    guess = imopen(guess, SE1);
-    guess = imerode(guess, SE2);
+    guess = imclose(guess, SE1);
+    guess = imdilate(guess, SE2);
     
     if(show)
         figure(1);
@@ -48,5 +48,6 @@ for k = 1:length(directory)
 end
 clear;
 close all
+toc;
 end
 
