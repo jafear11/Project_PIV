@@ -17,12 +17,12 @@ for k= 1:length(imatges.Files)
     %Load the image and the mask
     image = readimage(imatges,k);
     mask = readimage(mascaras,k);
-    mask_f = mask(:);
 
-    %Flatten the image
+    %Flatten the image and mask
     P = numel(image)/3;
     total  = total +P;
     image_f = reshape(image,P,3);
+    mask_f = mask(:);
 
     %We get an array of only the target pixels
     skin = image_f(~mask_f, :);
@@ -48,6 +48,7 @@ bar3(histograma_pell);
 xlabel('Cb');
 ylabel('Cr');
 zlabel('probability');
+
 %Store the histograms and the configuration parameters
 save('Nbins.mat', 'Nbins');
 save('Histograms.mat', 'histograma_fons', 'histograma_pell');

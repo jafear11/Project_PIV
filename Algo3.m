@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%% Algorithm 3 %%%%%%%%%%%%%%%%
 
 function[] = Algo3(thr,nfact,show)
-tic;
+
 %Default arguments
 if nargin==0
     thr = 0.00005;
@@ -20,6 +20,7 @@ directory = dir('Validation-Dataset\Images\*.jpg');
 path = what('Validation-Dataset\Images').path;
 mkdir('Masks');
 ImageFolder = '.\Masks';
+
 %Structuring elements
 SE1 = ones(7,7); 
 SE2 = ones(2,2);
@@ -46,8 +47,6 @@ for k = 1:length(directory)
     fullFileName = fullfile(ImageFolder, file_name);
     imwrite(guess,fullFileName,'bmp');
 end
-clear;
-close all
-toc;
+
 end
 

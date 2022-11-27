@@ -1,0 +1,12 @@
+- Carregar la màscara
+- Calcular funció distància
+- Threshold per fumar-se dits
+- Calcular centroide
+- Trobar els bordes
+- Calcular distància dels contorns al centre
+- El número de dits es el número de màxims per sobre un threshold.
+
+
+DISCLAIMERS
+- D'on collons treiem el threshold
+- 
