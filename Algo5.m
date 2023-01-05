@@ -1,33 +1,41 @@
 path = uigetdir;
 directory = dir(strcat(path, '\*.bmp'));
-errors = zeros(1,length(directory));
-guesses = zeros(1, length(directory));
 classError = zeros(6,6);
-
+fscore = zeros(1,6);
+fileID = fopen('resultats.csv', 'w');
 for k = 1:length(directory)
-    file = strcat(path,'\' ,directory(k).name);
+    name = directory(k).name;
+    fprintf(fileID, '%s, ', name);
+    file = strcat(path,'\' ,name);
     image = ~imread(file);
-    [M,N] = size(image);
-    num = str2num(directory(k).name(1));
-    %Busquem si podem separar palmell i braç en funció de la distància
+    num = str2double(name(1));
+
+    %Get rid of rings
+    [~,numRegions] = bwlabel(image);
+    if(numRegions >1)
+        image = imclose(image,ones(6,1));
+    end
+
+    %Compute distance, then get pixels over a threshold
     D = bwdist(~image);
     D = rescale(D);
     conjunts = D>0.7;
-    labeledImage = bwlabel(conjunts);
+    image = D>0.1;
 
-    %Ordenem els conjunts de més gran a més petit
+    %Find the regions and compute centroids (order by region area)
+    labeledImage = logical(conjunts);
     measurements = regionprops(labeledImage, conjunts);
     T = struct2table(measurements);
     T = sortrows(T, 'Area', 'descend');
     measurements = table2struct(T);
 
-    %CODI PER RETALLAR LA IMATGE
-    %Comprovem que tenim més d'una àrea i que la segona és més gran que 10
+    %%%%%%%%%CROPPING%%%%%%%%%%%%
+    %Only when there are two regions larger than 10 pixels
     if(length(T.Area) > 1 && T.Area(2) >10)
         [armCenter, handCenter] = measurements.Centroid;
 
-        %Si una part del conjunt toca la vora esquerra, llavors el
-        %centroide més proper pertany al braç.
+        %The hand centroid is the one fartherst away from edges
+        [M,N] = size(image);
         if(any(image(:,1)))
             if(armCenter(1) > handCenter(1))
                 aux = armCenter;
@@ -35,9 +43,6 @@ for k = 1:length(directory)
                 handCenter = aux;
             end
         end
-
-        %Si una part del conjunt toca la vora inferior, llavors el
-        %centroide més proper pertany a braç.
         if(any(image(M,:)))
             if(armCenter(2) < handCenter(2))
                 aux = armCenter;
@@ -45,50 +50,54 @@ for k = 1:length(directory)
                 handCenter = aux;
             end
         end
-        %Retallem la imatge i definim el centroide com a centre de la
-        %imatge.
-        image = cropImage(handCenter,image);
-        D = bwdist(~image);
-        D = rescale(D);
-        conjunts = D>0.7; 
-        labeledImage = bwlabel(conjunts);
-        measurements = regionprops(labeledImage, conjunts);
-        T = struct2table(measurements);
-        T = sortrows(T, 'Area', 'descend');
-        measurements = table2struct(T);
-        handCenter = measurements.Centroid;
+
+        [image, handCenter] = cropImage(handCenter,image); %See cropImage
+        guess = tophat(image, handCenter); %See tophat
+
+        %Because we detected an arm, substract its maximum
+        guess = guess -1;
+        if(guess < 0)
+            guess = 0;
+        end
     else
-        labeledImage = bwlabel(image);
+        %In case of no arm, compute general centroid
+        labeledImage = logical(image);
         measurements = regionprops(labeledImage, image);
         T = struct2table(measurements);
         T = sortrows(T, 'Area', 'descend');
         measurements = table2struct(T);
         handCenter = measurements.Centroid;
+
+        guess = tophat(image, handCenter); %See tophat
+        if(guess > 5)
+            guess = 5;
+        end
+
     end
-    [distances, guess] = distance(image,handCenter);
+    fprintf(fileID, '%d\n', guess);
     
+    %Plot the cropped hand
     figure(1); 
     imshow(image);
     hold on
     plot(handCenter(1), handCenter(2), 'r*')
     title("Estimation: " + guess);
     hold off
-    guesses(k) = guess;
-    errors(k) = guess - num;
-    %%%% CLassification matrix
-    classError(guess +1, num +1) = classError(guess +1,num +1) + 1;    
-    pause();
+    classError(guess +1, num +1) = classError(guess +1,num +1) + 1;   
 end
-fscore = zeros(1,6);
-fprintf('\n \n')
 for i= 1:6
     precision = classError(i,i)/sum(classError(i,:));
     recall = classError(i,i)/sum(classError(:,i));
     fscore(i) = 2*(precision*recall)/(recall+precision);
     fprintf("F-Score for finger %i : %1.2f  [P = %1.2f, R = %1.2f] \n",  i-1, fscore(i), precision, recall);
 end
-fprintf("\n   GENERAL F-SCORE: %1.2f \n", mean(fscore));
-fprintf("\n   Geometric F-Score: %1.2f \n", geomean(fscore));
-clear all
+fprintf('\n \n')
+fprintf("GENERAL F-SCORE: %1.2f \n\n", mean(fscore));
+fprintf("GEOMETRIC F-SCORE: %1.2f \n\n", geomean(fscore));
+fprintf("Classification Error: \n");
+disp(classError);
+fclose(fileID);
+clear
 close all
+
 
