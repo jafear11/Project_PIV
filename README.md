@@ -1,2 +1,2 @@
 # Project_PIV
- Projecte del Lab de PIV
+A finger counting algorithm with image segmentation.
